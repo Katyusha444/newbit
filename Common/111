@@ -1,0 +1,53 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using Fungus;
+
+public class StoryManager :MonoSingleton<StoryManager>{
+
+    //读取场景的开关
+    public string sceneName;
+
+    public Flowchart pubfc;
+
+    public Flowchart storyfc;
+
+    int storyRate = -1;
+    void Awake () {
+
+        
+        if (GameObject.Find("GameMain")!=null)
+        {
+            storyRate = GamingData.instance.saveData.storyRate;
+        }
+        pubfc = GameObject.Find("PubFC").GetComponent<Flowchart>();
+        storyfc=GameObject.Find("StoryFC").GetComponent<Flowchart>();
+
+        //fc.SendMessage("s" + storyRate.ToString(),SendMessageOptions.RequireReceiver);
+
+        StartPublicBlock(storyRate.ToString());
+    }
+
+    private void Start()
+    {
+        
+    }
+    void Update () {
+		
+	}
+
+    public void StartPublicBlock(string i)
+    {
+        pubfc.SendFungusMessage(i);
+    }
+    public void StartStoryBlock(string i)
+    {
+        storyfc.SendFungusMessage(i);
+    }
+
+    public void GoToStoryScene()
+    {
+        GameMain.instance.LoadScene(sceneName);
+    }
+
+}
